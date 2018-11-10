@@ -25,13 +25,15 @@ spreadsheet data before it's used in other tools
 
 ## Requirements
 
-In order to use this you will need to have Java and Maven installed. In future versions we will include a pre-compiled
-version directly in the repository.
+In order to use this tool you will need to have Java installed. Currently we're compiling against Java 1.8, but later
+versions should work.
+
+If you want to build the tool yourself then you will need to have Java and Maven installed. 
 
 * JDK: https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
 * Maven: https://www.baeldung.com/install-maven-on-windows-linux-mac
 
-## Currently supported filters are:
+## Currently supported filters/operations are:
 
 * json2xml,
 
