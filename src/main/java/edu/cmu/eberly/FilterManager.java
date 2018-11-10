@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Set;
 
 import edu.cmu.eberly.filters.DataFilterInterface;
+import edu.cmu.eberly.filters.FilterHashcode;
 import edu.cmu.eberly.filters.FilterJSON2XML;
 import edu.cmu.eberly.filters.FilterRemoveWhitespace;
 import edu.cmu.eberly.filters.FilterToLower;
@@ -30,6 +31,7 @@ public class FilterManager extends RepairTools {
 		addFilter (new FilterToUpper());
 		addFilter (new FilterToLower());
 		addFilter (new FilterRemoveWhitespace());
+		addFilter (new FilterHashcode());
 	}
 
 	/**

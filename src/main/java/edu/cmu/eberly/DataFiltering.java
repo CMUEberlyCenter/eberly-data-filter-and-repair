@@ -150,7 +150,7 @@ public class DataFiltering extends FilterManager {
 		options.addOption("v", "verbose", false, "Show verbose log output");
 		options.addOption("f", "format", true, "Input format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index");
-		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, trim, tolower, toupper. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
+		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, trim, tolower, toupper, hashcode. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
 
 		// >-------------------------------------------------------------------------------------
 		// Run basic tests

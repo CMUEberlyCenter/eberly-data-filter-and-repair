@@ -16,10 +16,24 @@ spreadsheet data before it's used in other tools
  -o,--output <arg>      Write data to output file, or if not provided
                         write to stdout
  -p,--operation <arg>   The operation to perform, one of: json2xml,
-                        xml2json, trim, tolower, toupper. Separate with |
+                        xml2json, trim, tolower, toupper, hashcode. Separate with |
                         to run multiple filters. Filters are executed left
                         to right as they are specified in this argument
  -t,--target <arg>      Target column to modify, numeric index
  -v,--verbose           Show verbose log output
 ```
+
+Currently support filters are:
+
+* json2xml,
+
+* xml2json, 
+
+* trim, 
+
+* tolower, 
+
+* toupper, 
+
+* hashcode
 
