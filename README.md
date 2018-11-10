@@ -23,7 +23,7 @@ spreadsheet data before it's used in other tools
  -v,--verbose           Show verbose log output
 ```
 
-Currently supported filters are:
+## Currently supported filters are:
 
 * json2xml,
 
@@ -35,9 +35,11 @@ Currently supported filters are:
 
 * toupper, 
 
-* hashcode
+* hashcode,
 
-ToDo:
+* removewhitespace, 
+
+## ToDo:
 
 * Instead of one column to be transformed, allow for multiples and ranges
 * Allow arguments to the filters
