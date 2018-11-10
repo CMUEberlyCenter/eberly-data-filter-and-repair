@@ -293,7 +293,7 @@ public class DataFiltering extends RepairTools {
 				e.printStackTrace();
 			}
 		} else {
-			new DataFiltering().help();
+			filter.help();
 		}
 	}
 }
