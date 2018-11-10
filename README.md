@@ -3,7 +3,10 @@
 A small application that can be used to clean, filter and repair raw spreadsheet data before it's used in other tools
 
 ```
-usage: DataFiltering
+usage: DataFiltering [-f <arg>] [-h <arg>] [-i <arg>] [-o <arg>] [-p <arg>] [-t <arg>] [-v]
+A small application that can be used to clean, filter and repair raw
+spreadsheet data before it's used in other toolse
+
  -f,--format <arg>      Input format, use t for tab and c for comma.
                         Default is c
  -h,--help <arg>        Command line help
@@ -14,5 +17,8 @@ usage: DataFiltering
                         xml2json, clean, tolower, toupper, repair
  -t,--target <arg>      Target column to modify, numeric index
  -v,--verbose           Show verbose log output
+
+Please report issues at
+https://github.com/Mindtoeye/DataFilterAndRepair/issues
 ```
 

@@ -51,7 +51,11 @@ public class RepairTools {
 	 */
 	public void help() {
 		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp("DataFiltering", options);
+		
+		String header = "A small application that can be used to clean, filter and repair raw spreadsheet data before it's used in other tools\n\n";
+		String footer = "\nPlease report issues at https://github.com/Mindtoeye/DataFilterAndRepair/issues";
+		
+		formatter.printHelp("DataFiltering", header, options, footer, true);
 	}
 
 	/**
@@ -70,25 +74,6 @@ public class RepairTools {
 		}
 
 		return formatter.toString();
-	}
-
-	/**
-	 * @param test
-	 * @return
-	 */
-	public boolean isJSONValid(String test) {
-		try {
-			new JSONObject(test);
-		} catch (JSONException ex) {
-			// edited, to include @Arthur's comment
-			// e.g. in case JSONArray is valid as well...
-			try {
-				new JSONArray(test);
-			} catch (JSONException ex1) {
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	/**

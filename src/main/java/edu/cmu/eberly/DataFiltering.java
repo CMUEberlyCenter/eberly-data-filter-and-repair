@@ -1,6 +1,8 @@
 package edu.cmu.eberly;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -8,6 +10,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.*;
 import org.xml.sax.SAXException;
+
+import edu.cmu.eberly.filters.DataFilterInterface;
+import edu.cmu.eberly.filters.FilterJSON2XML;
+import edu.cmu.eberly.filters.FilterXML2JSON;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -16,8 +23,15 @@ import org.apache.commons.cli.ParseException;
 /**
  * @author vvelsen
  */
-public class DataFiltering extends RepairTools {
-
+public class DataFiltering extends FilterManager {
+	
+	/**
+	 * 
+	 */
+	public DataFiltering () {
+		super();
+	}
+	
 	/**
 	 * 
 	 * @param args
@@ -129,6 +143,12 @@ public class DataFiltering extends RepairTools {
 	 */
 	private String transform(String raw) {
 
+		for (int i=0;i<filters.size();i++) {
+			DataFilterInterface aFilter=filters.get(i);
+			raw=aFilter.transform(raw);
+		}
+		
+		/*
 		//>------------------------------------------------------------
 		if (operation.equalsIgnoreCase("json2xml")==true) {
 			if (isJSONValid (raw)==true) {
@@ -190,6 +210,7 @@ public class DataFiltering extends RepairTools {
 		}				
  
 		//>------------------------------------------------------------
+		*/
 		
 		return raw;
 	}
@@ -246,6 +267,8 @@ public class DataFiltering extends RepairTools {
 				warn("Invalid or missing cell operation");
 				return (false);
 			}
+			
+			buildFilters (operation);
 		}
 
 		if (cmd.hasOption("i") == false) {
@@ -266,11 +289,13 @@ public class DataFiltering extends RepairTools {
 			if (cmd.getOptionValue("f", "t").equalsIgnoreCase("t") == true) {
 				splitCharacter = "\t";
 				debug("Set split character to tab");
-			}
-
-			if (cmd.getOptionValue("f", "t").equalsIgnoreCase("c") == true) {
-				splitCharacter = ",";
-				debug("Set split character to comma");
+			} else {
+				if (cmd.getOptionValue("f", "t").equalsIgnoreCase("c") == true) {
+					splitCharacter = ",";
+					debug("Set split character to comma");
+				} else {
+					splitCharacter = cmd.getOptionValue("f", "\t");
+				}
 			}
 		}
 
@@ -287,6 +312,7 @@ public class DataFiltering extends RepairTools {
 		DataFiltering filter = new DataFiltering();
 		if (filter.configure(args)==true) {
 			try {
+				filter.showFilters ();
 				filter.run();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
