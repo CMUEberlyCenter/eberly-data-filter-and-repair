@@ -23,7 +23,7 @@ spreadsheet data before it's used in other tools
  -v,--verbose           Show verbose log output
 ```
 
-Currently support filters are:
+Currently supported filters are:
 
 * json2xml,
 
@@ -37,3 +37,10 @@ Currently support filters are:
 
 * hashcode
 
+ToDo:
+
+* Instead of one column to be transformed, allow for multiples and ranges
+* Allow arguments to the filters
+* Add specific help for a filter/operations
+* Generate a report in a file that provides details of what was done to each row with any exceptions and failures
+* Allow operations to add a column instead of working in place
