@@ -6,9 +6,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * @author vvelsen

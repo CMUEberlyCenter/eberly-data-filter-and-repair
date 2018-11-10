@@ -1,19 +1,8 @@
 package edu.cmu.eberly;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Hashtable;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.json.*;
-import org.xml.sax.SAXException;
 
 import edu.cmu.eberly.filters.DataFilterInterface;
-import edu.cmu.eberly.filters.FilterJSON2XML;
-import edu.cmu.eberly.filters.FilterXML2JSON;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -39,6 +28,7 @@ public class DataFiltering extends FilterManager {
 	public void run() throws Exception {
 		debug("run ()");
 		
+		// Users specify the column index as a range starting from 1, we need to shift it back one
 		targetColumn--;
 		
 		if (targetColumn<0) {
@@ -142,76 +132,11 @@ public class DataFiltering extends FilterManager {
 	 * @return
 	 */
 	private String transform(String raw) {
-
 		for (int i=0;i<filters.size();i++) {
 			DataFilterInterface aFilter=filters.get(i);
 			raw=aFilter.transform(raw);
 		}
-		
-		/*
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("json2xml")==true) {
-			if (isJSONValid (raw)==true) {
-			  JSONObject json = new JSONObject(raw);
-			  String xml = "<xml>"+XML.toString(json)+"</xml>";
-			  debug ("From: " + raw);
-			  debug ("To: " + xml);
-			  return(xml);
-			}  
-		}
-
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("xml2json")==true) {
-			Boolean validXML=false;
-	    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	    DocumentBuilder dBuilder=null;
-			try {
-				dBuilder = dbFactory.newDocumentBuilder();
-			} catch (ParserConfigurationException e){}
-			
-			if (dBuilder!=null) {
 				
-		    try {
-					dBuilder.parse(raw);
-					validXML=true;
-				} catch (SAXException e) {
-				} catch (IOException e) {
-				}
-		    
-		    if (validXML==true) {
-				 return (XML.toJSONObject(raw).toString());
-		    }
-			}
-		}
-		
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("clean")==true) {
-			return (raw.trim());
-		}		
-		
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("tolower")==true) {
-			return (raw.toLowerCase());
-		}	
-		
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("toupper")==true) {
-			return (raw.toUpperCase());
-		}		
-		
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("removewhitespace")==true) {
-			return (raw.replaceAll("\\s+",""));
-		}		
-		
-		//>------------------------------------------------------------
-		if (operation.equalsIgnoreCase("repare")==true) {
-			
-		}				
- 
-		//>------------------------------------------------------------
-		*/
-		
 		return raw;
 	}
 
@@ -223,9 +148,9 @@ public class DataFiltering extends FilterManager {
 		options.addOption("i", "input", true, "Load data from input file");
 		options.addOption("o", "output", true, "Write data to output file, or if not provided write to stdout");
 		options.addOption("v", "verbose", false, "Show verbose log output");
-		options.addOption("f", "format", true, "Input format, use t for tab and c for comma. Default is c");
+		options.addOption("f", "format", true, "Input format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index");
-		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, clean, tolower, toupper, repair");
+		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, trim, tolower, toupper. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
 
 		// >-------------------------------------------------------------------------------------
 		// Run basic tests
@@ -313,6 +238,7 @@ public class DataFiltering extends FilterManager {
 		if (filter.configure(args)==true) {
 			try {
 				filter.showFilters ();
+				filter.showAvailable ();
 				filter.run();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

@@ -2,9 +2,14 @@ package edu.cmu.eberly;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Set;
 
 import edu.cmu.eberly.filters.DataFilterInterface;
 import edu.cmu.eberly.filters.FilterJSON2XML;
+import edu.cmu.eberly.filters.FilterRemoveWhitespace;
+import edu.cmu.eberly.filters.FilterToLower;
+import edu.cmu.eberly.filters.FilterToUpper;
+import edu.cmu.eberly.filters.FilterTrim;
 import edu.cmu.eberly.filters.FilterXML2JSON;
 
 /**
@@ -21,12 +26,28 @@ public class FilterManager extends RepairTools {
 	public FilterManager () {
 		addFilter (new FilterJSON2XML ());
 		addFilter (new FilterXML2JSON ());
+		addFilter (new FilterTrim ());
+		addFilter (new FilterToUpper());
+		addFilter (new FilterToLower());
+		addFilter (new FilterRemoveWhitespace());
 	}
 
 	/**
 	 * 
 	 */
+	public void showAvailable () {
+		debug ("Available filters:");
+    Set<String> keys = filterList.keySet();
+    for(String key: keys){
+      debug("Available filter of "+key);
+    }		
+	}
+	
+	/**
+	 * 
+	 */
 	public void showFilters () {
+		debug ("Assigned filters:");
 		for (int i=0;i<filters.size();i++) {
 			DataFilterInterface aFilter=filters.get(i);
 			System.out.println("Filter ["+i+"]: " + aFilter.getName());
