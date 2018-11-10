@@ -23,6 +23,14 @@ spreadsheet data before it's used in other tools
  -v,--verbose           Show verbose log output
 ```
 
+## Requirements
+
+In order to use this you will need to have Java and Maven installed. In future versions we will include a pre-compiled
+version directly in the repository.
+
+* JDK: https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
+* Maven: https://www.baeldung.com/install-maven-on-windows-linux-mac
+
 ## Currently supported filters are:
 
 * json2xml,
@@ -43,6 +51,7 @@ spreadsheet data before it's used in other tools
 
 * Instead of one column to be transformed, allow for multiples and ranges
 * Allow arguments to the filters
-* Add specific help for a filter/operations
+* Add specific help for each filter/operation
 * Generate a report in a file that provides details of what was done to each row with any exceptions and failures
 * Allow operations to add a column instead of working in place
+* Support the different formats of newlines
