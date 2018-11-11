@@ -1,6 +1,7 @@
 package edu.cmu.eberly;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import edu.cmu.eberly.filters.DataFilterInterface;
 
@@ -28,14 +29,6 @@ public class DataFiltering extends FilterManager {
 	public void run() throws Exception {
 		debug("run ()");
 		
-		// Users specify the column index as a range starting from 1, we need to shift it back one
-		targetColumn--;
-		
-		if (targetColumn<0) {
-			warn("Invalid column target index");
-			return;
-		}
-
 		File input = new File(inputFile);
 
 		BufferedReader br = new BufferedReader(new FileReader(input));
@@ -56,21 +49,53 @@ public class DataFiltering extends FilterManager {
 			
 			headerLength=headers.length;
 			
+			/*
 			if (targetColumn > headerLength) {
 				warn("Target column is greater than available number of columns (out of bounds)");
 				closeOutput ();	
 				br.close();
 				return;
 			}
+			*/
 			
 			// Write the header directly to the output file
+			// DON'T FORGET TO REFORMAT WITH THE REQUESTED OUTPUT DELIMITER
 			if (writeToOutput(st)==false) {
 				closeOutput ();	
 				br.close();
 				return;
 			}			
 			
-			debug("Found " + headers.length + " columns, with repair index: " + (targetColumn+1) + " => " + headers [targetColumn]);
+			//debug("Found " + headers.length + " columns, with repair index: " + (targetColumn+1) + " => " + headers [targetColumn]);
+			
+			debug ("Evaluating ranges ...");
+			
+			if (evaluateRanges (headerLength)==false) {		
+				closeOutput ();	
+				br.close();				
+				return;
+			}
+			
+			targetColumns=RangeParser.parseIntRanges(targetColumnString);
+			
+			if (targetColumns.size()==0) {
+				warn("Unable to extract valid column indices");
+				closeOutput ();	
+				br.close();						
+				return;
+			}
+			
+			for (int i=0;i<targetColumns.size();i++) {
+				debug ("Target column: " + targetColumns.get(i));
+			}
+			
+			if (targetColumns.get(targetColumns.size()-1)>headerLength) {
+				closeOutput ();	
+				br.close();						
+				return;
+			}
+			
+			debug ("Valid column ranges round, proceeding ...");
 		}
 		
 		index++;
@@ -94,17 +119,31 @@ public class DataFiltering extends FilterManager {
 				if (headerLength==current.length) {
 					repair=false;
 					if (previous!=null) {
-				    String raw=previous [targetColumn];
-				  
-				    String formatted=transform(raw);
-				  
-				    previous [targetColumn]=formatted;
-				
+						// Apply requested transformation to target columns ...
+						
+						for (int k=0;k<targetColumns.size();k++) {
+							Integer targetColumn=targetColumns.get(k);
+							
+							targetColumn--;
+							
+							if (targetColumn>=0) {								
+						    String raw=previous [targetColumn];
+						  
+						    String formatted=transform(raw);
+						  
+						    previous [targetColumn]=formatted;						
+							} else {
+								closeOutput ();									
+								br.close();										
+								return;
+							}
+						}
+						
 				    if (writeToOutput(rowToString (previous))==false) {
 						  closeOutput ();	
 						  br.close();
 				  	  return;
-				    }
+				    }						
 		
 					  index++;
 					}
@@ -117,14 +156,25 @@ public class DataFiltering extends FilterManager {
 				}
 			}
 			
-			
-			
 			indexOriginal++;
 		}
 		
 		closeOutput ();	
 		
 		br.close();		
+	}
+
+	/**
+	 * @param headerLength
+	 * @return
+	 */
+	private boolean evaluateRanges(int headerLength) {
+    if (RangeParser.isValidIntRangeInput(targetColumnString)==false) {
+    	warn ("Provided columns are not in a readable format");
+    	return (false);
+    }
+		
+		return true;
 	}
 
 	/**
@@ -149,7 +199,7 @@ public class DataFiltering extends FilterManager {
 		options.addOption("o", "output", true, "Write data to output file, or if not provided write to stdout");
 		options.addOption("v", "verbose", false, "Show verbose log output");
 		options.addOption("f", "format", true, "Input format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
-		options.addOption("t", "target", true, "Target column to modify, numeric index");
+		options.addOption("t", "target", true, "Target column to modify, numeric index You can specify a single index, a comma separated list of indices, a range such as 1-4 or a combination");
 		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, trim, tolower, toupper, hashcode, removewhitespace. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
 
 		// >-------------------------------------------------------------------------------------
@@ -179,11 +229,14 @@ public class DataFiltering extends FilterManager {
 		}
 
 		if (cmd.hasOption("t")) {
-			targetColumn = Integer.parseInt(cmd.getOptionValue("t", "-1"));
-			if (targetColumn == -1) {
+			targetColumnString=cmd.getOptionValue("t", "");
+
+			if (RangeParser.isValidIntRangeInput(targetColumnString)==false) {
 				warn("Invalid or missing target column");
 				return (false);
 			}
+			
+			RangeParser.printIntRanges (targetColumnString);
 		}
 
 		if (cmd.hasOption("p")) {

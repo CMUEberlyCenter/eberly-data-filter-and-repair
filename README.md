@@ -33,6 +33,26 @@ If you want to build the tool yourself then you will need to have Java and Maven
 * JDK: https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
 * Maven: https://www.baeldung.com/install-maven-on-windows-linux-mac
 
+## Arguments
+
+* **-f,--format <arg>** 
+    1. Description: Input format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is
+    1. Example to parse with tabs: **--format t**
+    1. Example to use pipes as the separator: **--format |**
+    1. Example to use a comma, either: **--format c** or: **--format**
+    
+* **-h,--help <arg>** Command line help
+
+* **-i,--input <arg>** Load data from input file
+
+* **-o,--output <arg>** Write data to output file, or if not provided write to stdout
+
+* **-p,--operation <arg>** The operation to perform. See the sections in the README on each available filter. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument
+
+* **-t,--target <arg>** Target column to modify, numeric index
+
+* **-v,--verbose**  Show verbose log output
+
 ## Currently supported filters/operations are:
 
 * json2xml,
@@ -51,7 +71,6 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 ## ToDo:
 
-* Instead of one column to be transformed, allow for multiples and ranges
 * Allow arguments to the filters
 * Add specific help for each filter/operation
 * Generate a report in a file that provides details of what was done to each row with any exceptions and failures

@@ -1,5 +1,7 @@
 package edu.cmu.eberly;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.*;
 
 /**
@@ -54,12 +56,56 @@ public class RangeParser {
 		int i = 0;
 		while (m.find()) {
 			msg = "  value[" + ++i + "] ibase=" + m.group(1);
+			
 			if (m.group(2) != null) {
 				msg += " range=" + m.group(2);
 			}
-			;
+			
 			System.out.println(msg);
 		}
+	}
+	
+	/**
+	 * @param text
+	 */
+	public static ArrayList <Integer> parseIntRanges(String text) {
+		//System.out.println(text);
+		
+		ArrayList <Integer> ranges=new ArrayList <Integer>();
+		
+		Pattern re_next_val = Pattern.compile("# extract next integers/integer range value.    \n"
+		    + "([0-9]+)      # $1: 1st integer (Base).         \n" 
+				+ "(?:           # Range for value (optional).     \n"
+		    + "  -           # Dash separates range integer.   \n" 
+				+ "  ([0-9]+)    # $2: 2nd integer (Range)         \n"
+		    + ")?            # Range for value (optional).     \n"
+				+ "(?:,|$)       # End on comma or string end.",
+		    Pattern.COMMENTS);
+		Matcher m = re_next_val.matcher(text);
+
+		while (m.find()) {			
+			if (m.group(2) != null) {
+				Integer from=Integer.parseInt(m.group(1));
+				Integer to=Integer.parseInt(m.group(2));
+				
+				//System.out.println("Generating numer list from " + from + " to " + to);
+				
+				for (int j=from;j<(to+1);j++) {
+					if (ranges.contains(j)==false) {
+					  ranges.add(j);
+					}
+				}
+			} else {
+				Integer anIndex=Integer.parseInt(m.group(1));
+				if (ranges.contains(anIndex)==false) {
+				  ranges.add(anIndex);
+				}
+			}			
+		}
+		
+		Collections.sort (ranges);
+		
+		return(ranges);
 	}
 
 	/**
@@ -68,15 +114,24 @@ public class RangeParser {
 	public static void main(String[] args) {
 		String[] arr = new String[] { 
 		  // Valid inputs:
-		  "1", "1,2,3", "1-9", "1-9,10-19,20-199", "1-8,9,10-18,19,20-199",
+		  "1",
+		  "1,2,3",
+		  "1-9",
+		  "1-9,10-19,20-199",
+		  "1-8,9,10-18,19,20-199",
 		  // Invalid inputs:
-		  "A", "1,2,", "1 - 9", " ", "" 
+		  "A",
+		  "1,2,",
+		  "1 - 9",
+		  " ",
+		  "" 
 		};
 
 		// Loop through all test input strings:
 		int i = 0;
 		for (String s : arr) {
 			String msg = "String[" + ++i + "] = \"" + s + "\" is ";
+			
 			if (isValidIntRangeInput(s)) {
 				// Valid input line
 				System.out.println(msg + "valid input. Parsing...");

@@ -3,6 +3,7 @@ package edu.cmu.eberly;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
@@ -20,7 +21,9 @@ public class RepairTools {
 	
 	protected String splitCharacter = ",";
 
-	protected int targetColumn = -1;
+	//protected int targetColumn = -1;
+	protected String targetColumnString = "";
+	protected ArrayList<Integer> targetColumns=null;
 
 	protected String operation = "NOP";	
 	
