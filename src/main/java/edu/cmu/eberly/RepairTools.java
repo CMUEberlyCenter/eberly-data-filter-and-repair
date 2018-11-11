@@ -21,7 +21,6 @@ public class RepairTools {
 	
 	protected String splitCharacter = ",";
 
-	//protected int targetColumn = -1;
 	protected String targetColumnString = "";
 	protected ArrayList<Integer> targetColumns=null;
 
@@ -98,7 +97,6 @@ public class RepairTools {
           warn ("Error opening output file ("+outputFile+"): " + e.getMessage());
 					return (false);
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return (false);
 				}

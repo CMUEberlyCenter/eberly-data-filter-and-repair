@@ -92,23 +92,24 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 ## Currently supported filters/operations are:
 
-* json2xml,
+* **json2xml**,
 
-* xml2json, 
+* **xml2json**, 
 
-* trim, 
+* **trim**, 
 
-* tolower, 
+* **tolower**, 
 
-* toupper, 
+* **toupper**, 
 
-* hashcode,
+* **hashcode**,
 
-* removewhitespace, 
+* **removewhitespace**, 
 
 ## ToDo:
 
 * Allow arguments for the filters
+* Allow the input delimeter to be different from the output delimeter
 * Add specific help for each filter/operation
 * Generate a report in a file that provides details of what was done to each row with any exceptions and failures
 * Allow operations to add a column instead of working in place

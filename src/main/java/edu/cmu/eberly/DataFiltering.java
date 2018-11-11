@@ -48,9 +48,8 @@ public class DataFiltering extends FilterManager {
 			
 			headerLength=headers.length;
 						
-			// Write the header directly to the output file
-			// DON'T FORGET TO REFORMAT WITH THE REQUESTED OUTPUT DELIMITER
-			if (writeToOutput(st)==false) {
+			// Write the header directly to the output file (in the requested format of course)
+			if (writeToOutput(rowToString(headers))==false) {
 				closeOutput ();	
 				br.close();
 				return;
@@ -186,7 +185,7 @@ public class DataFiltering extends FilterManager {
 		options.addOption("i", "input", true, "Load data from input file");
 		options.addOption("o", "output", true, "Write data to output file, or if not provided write to stdout");
 		options.addOption("v", "verbose", false, "Show verbose log output");
-		options.addOption("f", "format", true, "Input format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
+		options.addOption("f", "format", true, "Input/Output format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index You can specify a single index, a comma separated list of indices, a range such as 1-4 or a combination");
 		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, trim, tolower, toupper, hashcode, removewhitespace. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
 
