@@ -1,7 +1,6 @@
 package edu.cmu.eberly;
 
 import java.io.*;
-import java.util.ArrayList;
 
 import edu.cmu.eberly.filters.DataFilterInterface;
 
@@ -48,16 +47,7 @@ public class DataFiltering extends FilterManager {
 			headers = st.split(splitCharacter);
 			
 			headerLength=headers.length;
-			
-			/*
-			if (targetColumn > headerLength) {
-				warn("Target column is greater than available number of columns (out of bounds)");
-				closeOutput ();	
-				br.close();
-				return;
-			}
-			*/
-			
+						
 			// Write the header directly to the output file
 			// DON'T FORGET TO REFORMAT WITH THE REQUESTED OUTPUT DELIMITER
 			if (writeToOutput(st)==false) {
@@ -65,9 +55,7 @@ public class DataFiltering extends FilterManager {
 				br.close();
 				return;
 			}			
-			
-			//debug("Found " + headers.length + " columns, with repair index: " + (targetColumn+1) + " => " + headers [targetColumn]);
-			
+						
 			debug ("Evaluating ranges ...");
 			
 			if (evaluateRanges (headerLength)==false) {		
