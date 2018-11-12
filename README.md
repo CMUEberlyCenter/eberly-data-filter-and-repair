@@ -21,6 +21,7 @@ spreadsheet data before it's used in other tools
                         be used as-is
  -h,--help <arg>        Command line help
  -i,--input <arg>       Load data from input file
+ -w,--overwrite         Overwrite existing file if it exists
  -o,--output <arg>      Write data to output file, or if not provided
                         write to stdout
  -p,--operation <arg>   The operation to perform, one of: json2xml,
@@ -89,6 +90,10 @@ If you want to build the tool yourself then you will need to have Java and Maven
 * **-v,--verbose**
   * Description: turn on debug output to the console. Use this if you want to see detailed information as to what the application does behind the scenes
   * Required: no
+  
+* **-w,--overwrite**
+  * Description: when provided, the application will overwrite any existing file with the same name and path as the output file.
+  * Required: no  
 
 ## Currently supported filters/operations are:
 

@@ -29,14 +29,19 @@ public class DataFiltering extends FilterManager {
 		debug("run ()");
 		
 		File input = new File(inputFile);
+		
+		if (input.exists()==false) {
+			warn ("Input file does not exist: " + inputFile);
+			return;
+		}
 
 		BufferedReader br = new BufferedReader(new FileReader(input));
 		
 		Long index = 0L;
 		Long indexOriginal = 0L;
+		int headerLength=0;
 		String st="";
 		String[] headers = null;
-		int headerLength=0;
 		String [] current=null;
 		String [] previous=null;
 		
@@ -72,9 +77,11 @@ public class DataFiltering extends FilterManager {
 				return;
 			}
 			
+			/*
 			for (int i=0;i<targetColumns.size();i++) {
 				debug ("Target column: " + targetColumns.get(i));
 			}
+			*/
 			
 			if (targetColumns.get(targetColumns.size()-1)>headerLength) {
 				closeOutput ();	
@@ -100,42 +107,17 @@ public class DataFiltering extends FilterManager {
 		
 			if (current.length==0) {
 				warn("Found row with length 0 at row "+indexOriginal+", skipping");
-			} else {
-				//debug ("Check, header length " + headerLength + ", row length: " + row.length);
-				
+			} else {				
 				if (headerLength==current.length) {
 					repair=false;
-					if (previous!=null) {
-						// Apply requested transformation to target columns ...
-						
-						for (int k=0;k<targetColumns.size();k++) {
-							Integer targetColumn=targetColumns.get(k);
-							
-							targetColumn--;
-							
-							if (targetColumn>=0) {								
-						    String raw=previous [targetColumn];
-						  
-						    String formatted=transform(raw);
-						  
-						    previous [targetColumn]=formatted;						
-							} else {
-								closeOutput ();									
-								br.close();										
-								return;
-							}
-						}
-						
-				    if (writeToOutput(rowToString (previous))==false) {
-						  closeOutput ();	
-						  br.close();
-				  	  return;
-				    }						
-		
+					if (previous!=null) {						
+            if (applyTransforms (previous)==false) {
+          		closeOutput ();	
+          		br.close();		            	
+            }
 					  index++;
 					}
 				} else {
-					//warn ("Potentially corrupt row: "  +indexOriginal + " attempting repair ...");
 					if (headerLength>current.length) {
 						repair=true;
 						previous [previous.length-1]=(previous [previous.length-1]+" "+st.trim());
@@ -146,9 +128,41 @@ public class DataFiltering extends FilterManager {
 			indexOriginal++;
 		}
 		
+		// Catch up with ourselves because we only write 'previous' to disk
+		if (headerLength==current.length) {
+      applyTransforms (current);
+		}
+		
 		closeOutput ();	
 		
 		br.close();		
+	}
+
+	/**
+	 * @param aRow
+	 */
+	private Boolean applyTransforms(String[] aRow) {
+		for (int k=0;k<targetColumns.size();k++) {
+			Integer targetColumn=targetColumns.get(k);
+			
+			targetColumn--;
+			
+			if (targetColumn>=0) {								
+		    String raw=aRow [targetColumn];
+		  
+		    String formatted=transform(raw);
+		  
+		    aRow [targetColumn]=formatted;						
+			} else {
+        return (false);
+			}
+		}
+		
+    if (writeToOutput(rowToString (aRow))==false) {
+  	  return (false);
+    }	
+    
+    return (true);
 	}
 
 	/**
@@ -184,6 +198,7 @@ public class DataFiltering extends FilterManager {
 		options.addOption("h", "help", true, "Command line help");
 		options.addOption("i", "input", true, "Load data from input file");
 		options.addOption("o", "output", true, "Write data to output file, or if not provided write to stdout");
+		options.addOption("w", "overwrite", false, "Overwrite existing file if it exists");
 		options.addOption("v", "verbose", false, "Show verbose log output");
 		options.addOption("f", "format", true, "Input/Output format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index You can specify a single index, a comma separated list of indices, a range such as 1-4 or a combination");
@@ -214,6 +229,10 @@ public class DataFiltering extends FilterManager {
 		if (cmd.hasOption("v")) {
 			useDebugging = true;
 		}
+		
+		if (cmd.hasOption("w")) {
+			overwriteOut = true;
+		}		
 
 		if (cmd.hasOption("t")) {
 			targetColumnString=cmd.getOptionValue("t", "");
@@ -223,7 +242,7 @@ public class DataFiltering extends FilterManager {
 				return (false);
 			}
 			
-			RangeParser.printIntRanges (targetColumnString);
+			//RangeParser.printIntRanges (targetColumnString);
 		}
 
 		if (cmd.hasOption("p")) {
@@ -277,8 +296,8 @@ public class DataFiltering extends FilterManager {
 		DataFiltering filter = new DataFiltering();
 		if (filter.configure(args)==true) {
 			try {
-				filter.showFilters ();
-				filter.showAvailable ();
+				//filter.showFilters ();
+				//filter.showAvailable ();
 				filter.run();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

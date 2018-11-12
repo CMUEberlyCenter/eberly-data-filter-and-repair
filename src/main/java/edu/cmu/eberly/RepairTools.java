@@ -1,5 +1,6 @@
 package edu.cmu.eberly;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,6 +18,7 @@ public class RepairTools {
 	protected Options options = new Options();
 
 	protected Boolean useStOut=true;
+	protected Boolean overwriteOut=false;
 	protected PrintWriter writer = null;
 	
 	protected String splitCharacter = ",";
@@ -91,6 +93,16 @@ public class RepairTools {
 	protected Boolean writeToOutput (String aLine) {
 		if (useStOut==false) {
 		  if (writer==null) {
+		  	
+		  	if (overwriteOut==false) {
+			  	File tester=new File (outputFile);
+			  	
+			  	if(tester.exists()==true) {
+			  		warn("File already exists: " + outputFile);
+			  		return(false);
+			  	}
+		  	}
+		  	
 			  try {
 					writer = new PrintWriter(outputFile, "UTF-8");
 				} catch (FileNotFoundException e) {
