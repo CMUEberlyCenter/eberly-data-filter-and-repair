@@ -8,7 +8,8 @@ public class FilterToUpper extends FilterBase implements DataFilterInterface {
 	/**
 	 * 
 	 */
-	public FilterToUpper () {
+	public FilterToUpper (FilterConfig aConfig) {
+		super (aConfig);
 		setName ("toupper");
 	}
 	

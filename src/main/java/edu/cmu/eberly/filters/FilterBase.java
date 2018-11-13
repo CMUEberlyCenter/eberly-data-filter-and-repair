@@ -6,8 +6,15 @@ package edu.cmu.eberly.filters;
 public class FilterBase implements DataFilterInterface {
 
 	private String filterName="base";
-	
+	protected FilterConfig config=new FilterConfig (); // Make sure we have something
 	protected boolean useDebugging = false;
+	
+	/**
+	 * @param aConfig
+	 */
+	public FilterBase (FilterConfig aConfig) {
+		config=aConfig;
+	}
 
 	/**
 	 * @param aMessage

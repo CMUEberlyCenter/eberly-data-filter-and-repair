@@ -41,7 +41,7 @@ public class DataFiltering extends FilterManager {
 		Long indexOriginal = 0L;
 		int headerLength=0;
 		String st="";
-		String[] headers = null;
+		String [] headers = null;
 		String [] current=null;
 		String [] previous=null;
 		
@@ -49,7 +49,7 @@ public class DataFiltering extends FilterManager {
 		
 		// Process header
 		if (st!=null) {
-			headers = st.split(splitCharacter);
+			headers = st.split(inputCharacter);
 			
 			headerLength=headers.length;
 						
@@ -103,7 +103,7 @@ public class DataFiltering extends FilterManager {
 			  previous=current;
 			}
 			
-			current=st.split(splitCharacter);
+			current=st.split(inputCharacter);
 		
 			if (current.length==0) {
 				warn("Found row with length 0 at row "+indexOriginal+", skipping");
@@ -200,10 +200,11 @@ public class DataFiltering extends FilterManager {
 		options.addOption("o", "output", true, "Write data to output file, or if not provided write to stdout");
 		options.addOption("w", "overwrite", false, "Overwrite existing file if it exists");
 		options.addOption("v", "verbose", false, "Show verbose log output");
-		options.addOption("f", "format", true, "Input/Output format, use t for tab and c for comma. Default is c. Any other character or string will be used as-is");
+		options.addOption("if", "iformat", true, "Input delimiter character, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is");
+		options.addOption("of", "oformat", true, "Output delimiter character, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index You can specify a single index, a comma separated list of indices, a range such as 1-4 or a combination");
 		options.addOption("p", "operation", true, "The operation to perform, one of: json2xml, xml2json, trim, tolower, toupper, hashcode, removewhitespace. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
-
+	
 		// >-------------------------------------------------------------------------------------
 		// Run basic tests
 
@@ -269,20 +270,37 @@ public class DataFiltering extends FilterManager {
 			}
 		}
 
-		if (cmd.hasOption("f") == true) {
-			if (cmd.getOptionValue("f", "t").equalsIgnoreCase("t") == true) {
-				splitCharacter = "\t";
-				debug("Set split character to tab");
+		if (cmd.hasOption("if") == true) {
+			if (cmd.getOptionValue("if", "t").equalsIgnoreCase("t") == true) {
+				inputCharacter = "\t";
+				debug("Set input delimiter character to tab");
 			} else {
-				if (cmd.getOptionValue("f", "t").equalsIgnoreCase("c") == true) {
-					splitCharacter = ",";
-					debug("Set split character to comma");
+				if (cmd.getOptionValue("if", "t").equalsIgnoreCase("c") == true) {
+					inputCharacter = ",";
+					debug("Set input delimiter character to comma");
 				} else {
-					splitCharacter = cmd.getOptionValue("f", "\t");
+					inputCharacter = cmd.getOptionValue("if", "\t");
 				}
 			}
 		}
 
+		if (cmd.hasOption("of") == true) {
+			if (cmd.getOptionValue("of", "t").equalsIgnoreCase("t") == true) {
+				outputCharacter = "\t";
+				debug("Set output delimiter character to tab");
+			} else {
+				if (cmd.getOptionValue("of", "t").equalsIgnoreCase("c") == true) {
+					outputCharacter = ",";
+					debug("Set output delimiter character to comma");
+				} else {
+					outputCharacter = cmd.getOptionValue("of", "\t");
+				}
+			}
+		}	else {
+			// If no output delimiter is specified, use the input one
+			outputCharacter=inputCharacter;
+		}
+		
 		inputFile = cmd.getOptionValue("i", "");
 		
 		return (true);
@@ -295,8 +313,11 @@ public class DataFiltering extends FilterManager {
 	public static void main(String[] args) throws Exception {
 		DataFiltering filter = new DataFiltering();
 		if (filter.configure(args)==true) {
+			
+			filter.init();
+			
 			try {
-				//filter.showFilters ();
+				filter.showFilters ();
 				//filter.showAvailable ();
 				filter.run();
 			} catch (Exception e) {

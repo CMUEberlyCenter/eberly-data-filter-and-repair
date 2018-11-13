@@ -8,7 +8,8 @@ public class FilterTrim extends FilterBase implements DataFilterInterface {
 	/**
 	 * 
 	 */
-	public FilterTrim () {
+	public FilterTrim (FilterConfig aConfig) {
+		super (aConfig);
 		setName ("trim");
 	}
 	

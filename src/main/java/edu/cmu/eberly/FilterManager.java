@@ -8,6 +8,7 @@ import edu.cmu.eberly.filters.DataFilterInterface;
 import edu.cmu.eberly.filters.FilterHashcode;
 import edu.cmu.eberly.filters.FilterJSON2XML;
 import edu.cmu.eberly.filters.FilterRemoveWhitespace;
+import edu.cmu.eberly.filters.FilterRepair;
 import edu.cmu.eberly.filters.FilterToLower;
 import edu.cmu.eberly.filters.FilterToUpper;
 import edu.cmu.eberly.filters.FilterTrim;
@@ -25,15 +26,23 @@ public class FilterManager extends RepairTools {
 	 * 
 	 */
 	public FilterManager () {
-		addFilter (new FilterJSON2XML ());
-		addFilter (new FilterXML2JSON ());
-		addFilter (new FilterTrim ());
-		addFilter (new FilterToUpper());
-		addFilter (new FilterToLower());
-		addFilter (new FilterRemoveWhitespace());
-		addFilter (new FilterHashcode());
+
 	}
 
+	/**
+	 * 
+	 */
+	public void init () {
+		addFilter (new FilterJSON2XML (this));
+		addFilter (new FilterXML2JSON (this));
+		addFilter (new FilterTrim (this));
+		addFilter (new FilterToUpper(this));
+		addFilter (new FilterToLower(this));
+		addFilter (new FilterRemoveWhitespace(this));
+		addFilter (new FilterHashcode(this));
+		addFilter (new FilterRepair (this));
+	}
+	
 	/**
 	 * 
 	 */
@@ -72,7 +81,10 @@ public class FilterManager extends RepairTools {
 		
 		String [] list=aConfig.split("\\|");
 		
+		// Create a clean list  of filters to be applied and make sure we have at least the
+		// repair filter included
 		filters=new ArrayList<DataFilterInterface> ();
+		filters.add(filterList.get("repair"));
 
     for (int i=0;i<list.length;i++) {
     	String filterName=list [i].toLowerCase();

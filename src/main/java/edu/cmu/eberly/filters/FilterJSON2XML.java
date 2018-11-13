@@ -13,7 +13,8 @@ public class FilterJSON2XML extends FilterBase implements DataFilterInterface {
 	/**
 	 * 
 	 */
-	public FilterJSON2XML () {
+	public FilterJSON2XML(FilterConfig aConfig) {
+		super (aConfig);
 		setName ("json2xml");
 	}
 	

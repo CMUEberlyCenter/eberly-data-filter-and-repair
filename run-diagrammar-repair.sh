@@ -21,4 +21,4 @@ if [[ "$_java" ]]; then
     fi
 fi
 
-java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v --operation trim --target 33 --format c --input ~/Downloads/data.csv --output ~/Downloads/DiaGrammar-Repaired.filtered.csv
+java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation trim --target 33 --iformat t --oformat t --input ~/Downloads/data.tsv --output ~/Downloads/DiaGrammar-Repaired.filtered.tsv

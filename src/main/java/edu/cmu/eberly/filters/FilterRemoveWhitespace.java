@@ -8,7 +8,8 @@ public class FilterRemoveWhitespace extends FilterBase implements DataFilterInte
 	/**
 	 * 
 	 */
-	public FilterRemoveWhitespace () {
+	public FilterRemoveWhitespace (FilterConfig aConfig) {
+		super (aConfig);
 		setName ("removewhitespace");
 	}
 	

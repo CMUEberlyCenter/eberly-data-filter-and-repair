@@ -10,15 +10,20 @@ well-formatted regular data files to start from. The tool presented here tries t
 capabilities for those instances where direct access to the database is not available. The tool will try to do its best
 but is not guaranteed to always come up with perfect results.
 
+## Usage
+
 ```
-Usage: DataFiltering [-f <arg>] [-h <arg>] [-i <arg>] [-o <arg>] [-p <arg>] [-t <arg>] [-v]
+DataFiltering [-f <arg>] [-h <arg>] [-i <arg>] [-o <arg>] [-p <arg>] [-t <arg>] [-v]
 
 A small application that can be used to clean, filter and repair raw
 spreadsheet data before it's used in other tools
 
- -f,--format <arg>      Input format, use t for tab and c for comma.
+ -if,--iformat <arg>    Input format, use t for tab and c for comma.
                         Default is c. Any other character or string will
                         be used as-is
+ -of,--oformat <arg>    Output format, use t for tab and c for comma.
+                        Default is c. Any other character or string will
+                        be used as-is                        
  -h,--help <arg>        Command line help
  -i,--input <arg>       Load data from input file
  -w,--overwrite         Overwrite existing file if it exists
@@ -44,12 +49,19 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 ## Arguments
 
-* **-f,--format <arg>** 
+* **-if,--iformat <arg>** 
   * Description: Input format, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is
-  * Example to parse with tabs: **--format t**
-  * Example to use pipes as the separator: **--format |**
-  * Example to use a comma, either: **--format c** or: **--format**
+  * Example to parse with tabs: **--iformat t**
+  * Example to use pipes as the separator: **--iformat |**
+  * Example to use a comma, either: **--iformat c** or: **--iformat**
   * Required: no
+  
+* **-of,--oformat <arg>** 
+  * Description: Output format, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is. If not specified the output delimiter will be set to the input delimiter
+  * Example to parse with tabs: **--oformat t**
+  * Example to use pipes as the separator: **--oformat |**
+  * Example to use a comma, either: **--format c** or: **--oformat**
+  * Required: no  
     
 * **-h,--help <arg>**
   * Description: Get help either on the entire application or on a specific command
@@ -111,11 +123,13 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 * **removewhitespace**, 
 
-## ToDo:
+* **repair**, Always included. This filter will transform characters and strings that might harm the parsability by applications such as Excel. This filter will go through a number of iterations over the input cell data to ensure all characters are spreadsheet safe.
+ 
+
+## ToDo / Wishlist:
 
 * Allow arguments for the filters
-* Allow the input delimeter to be different from the output delimeter
 * Add specific help for each filter/operation
 * Generate a report in a file that provides details of what was done to each row with any exceptions and failures
 * Allow operations to add a column instead of working in place
-* Support the different formats of newlines
+* Support the different formats of newlines: \r\n or \n

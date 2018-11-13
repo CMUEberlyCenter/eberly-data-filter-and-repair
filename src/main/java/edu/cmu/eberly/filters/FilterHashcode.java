@@ -8,7 +8,8 @@ public class FilterHashcode extends FilterBase implements DataFilterInterface {
 	/**
 	 * 
 	 */
-	public FilterHashcode () {
+	public FilterHashcode (FilterConfig aConfig) {
+		super (aConfig);
 		setName ("hashcode");
 	}
 	

@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
+import edu.cmu.eberly.filters.FilterConfig;
+
 /**
  * @author vvelsen
  */
-public class RepairTools {
+public class RepairTools extends FilterConfig {
 
 	protected boolean useDebugging = false;
 	protected Options options = new Options();
@@ -21,9 +23,7 @@ public class RepairTools {
 	protected Boolean useStOut = true;
 	protected Boolean overwriteOut = false;
 	protected PrintWriter writer = null;
-
-	protected String splitCharacter = ",";
-
+	
 	protected String targetColumnString = "";
 	protected ArrayList<Integer> targetColumns = null;
 
@@ -69,7 +69,7 @@ public class RepairTools {
 
 		for (int i = 0; i < row.length; i++) {
 			if (i != 0) {
-				formatter.append(splitCharacter);
+				formatter.append(outputCharacter);
 			}
 
 			formatter.append(row[i]);

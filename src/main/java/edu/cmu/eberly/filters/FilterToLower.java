@@ -8,7 +8,8 @@ public class FilterToLower extends FilterBase implements DataFilterInterface {
 	/**
 	 * 
 	 */
-	public FilterToLower () {
+	public FilterToLower (FilterConfig aConfig) {
+		super (aConfig);
 		setName ("tolower");
 	}
 	
