@@ -18,6 +18,6 @@ public class FilterRepair extends FilterBase implements DataFilterInterface {
 	 */
 	@Override
 	public String transform(String raw) {
-		return raw.replaceAll(config.inputCharacter, "_");
+		return raw.replaceAll(config.inputCharacter, config.repairCharacter);
 	}
 }

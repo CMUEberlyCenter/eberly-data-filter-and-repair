@@ -77,12 +77,6 @@ public class DataFiltering extends FilterManager {
 				return;
 			}
 			
-			/*
-			for (int i=0;i<targetColumns.size();i++) {
-				debug ("Target column: " + targetColumns.get(i));
-			}
-			*/
-			
 			if (targetColumns.get(targetColumns.size()-1)>headerLength) {
 				closeOutput ();	
 				br.close();						
@@ -90,6 +84,11 @@ public class DataFiltering extends FilterManager {
 			}
 			
 			debug ("Valid column ranges round, proceeding ...");
+		} else {
+			warn("Input file does not seem to contain any data");
+			closeOutput ();	
+			br.close();				
+			return;
 		}
 		
 		index++;
@@ -108,19 +107,34 @@ public class DataFiltering extends FilterManager {
 			if (current.length==0) {
 				warn("Found row with length 0 at row "+indexOriginal+", skipping");
 			} else {				
+				
+				// We're back to normal so we should now be able to inspect what's in previous
 				if (headerLength==current.length) {
 					repair=false;
-					if (previous!=null) {						
+					
+					if (previous!=null) {
+						// First run a repair over the total row, we might have to collapse a few cells
+						
+						// Then run the list of desired filters over the resulting cells
             if (applyTransforms (previous)==false) {
           		closeOutput ();	
           		br.close();		            	
             }
+            
 					  index++;
 					}
 				} else {
+					// We have less cells than are indicated by the header, this means we assume
+					// that this is the result of spurious newlines. In this case we collect the
+					// data until we're back into a regular situation and then try to repair
 					if (headerLength>current.length) {
 						repair=true;
 						previous [previous.length-1]=(previous [previous.length-1]+" "+st.trim());
+					} else {
+						// We have too many cells in this row, which means a bad delimiter generated a bunch too many
+						if (headerLength<current.length) {
+							
+						}
 					}
 				}
 			}

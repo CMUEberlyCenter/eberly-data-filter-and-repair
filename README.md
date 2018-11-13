@@ -13,29 +13,40 @@ but is not guaranteed to always come up with perfect results.
 ## Usage
 
 ```
-DataFiltering [-f <arg>] [-h <arg>] [-i <arg>] [-o <arg>] [-p <arg>] [-t <arg>] [-v]
+usage: DataFiltering [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-p <arg>] [-t <arg>] [-v] [-w]
 
-A small application that can be used to clean, filter and repair raw
-spreadsheet data before it's used in other tools
-
- -if,--iformat <arg>    Input format, use t for tab and c for comma.
-                        Default is c. Any other character or string will
-                        be used as-is
- -of,--oformat <arg>    Output format, use t for tab and c for comma.
-                        Default is c. Any other character or string will
-                        be used as-is                        
  -h,--help <arg>        Command line help
  -i,--input <arg>       Load data from input file
- -w,--overwrite         Overwrite existing file if it exists
+ -if,--iformat <arg>    Input delimiter character, use t for tab and c for
+                        comma. Default is c (comma). Any other character
+                        or string will be used as-is
  -o,--output <arg>      Write data to output file, or if not provided
                         write to stdout
+ -of,--oformat <arg>    Output delimiter character, use t for tab and c
+                        for comma. Default is c (comma). Any other
+                        character or string will be used as-is
  -p,--operation <arg>   The operation to perform, one of: json2xml,
-                        xml2json, trim, tolower, toupper, hashcode. Separate with |
-                        to run multiple filters. Filters are executed left
-                        to right as they are specified in this argument
- -t,--target <arg>      Target column to modify, numeric index
+                        xml2json, trim, tolower, toupper, hashcode,
+                        removewhitespace. Separate with | to run multiple
+                        filters. Filters are executed left to right as
+                        they are specified in this argument
+ -t,--target <arg>      Target column to modify, numeric index You can
+                        specify a single index, a comma separated list of
+                        indices, a range such as 1-4 or a combination
  -v,--verbose           Show verbose log output
+ -w,--overwrite         Overwrite existing file if it exists
 ```
+
+## Examples
+
+* Repair a comma delimited file that might have spurious commas in the cells of column 8:
+
+java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation repair --target 8 --iformat c --oformat c --input ./data/person-commaseparator.txt --output ./output/person-commaseparator-repaired.filtered.csv
+
+* Repair a tab delimited file where some cells have newlines:
+
+java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation repair --target 8 --iformat t --oformat t --input ./data/person-tabseparator.txt --output ./output/person-tabseparator-repaired.filtered.tsv
+
 
 ## Requirements
 
@@ -53,14 +64,14 @@ If you want to build the tool yourself then you will need to have Java and Maven
   * Description: Input format, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is
   * Example to parse with tabs: **--iformat t**
   * Example to use pipes as the separator: **--iformat |**
-  * Example to use a comma, either: **--iformat c** or: **--iformat**
+  * Example to use a comma, either: **--iformat c** or: **--iformat ,**
   * Required: no
   
 * **-of,--oformat <arg>** 
   * Description: Output format, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is. If not specified the output delimiter will be set to the input delimiter
   * Example to parse with tabs: **--oformat t**
   * Example to use pipes as the separator: **--oformat |**
-  * Example to use a comma, either: **--format c** or: **--oformat**
+  * Example to use a comma, either: **--format c** or: **--oformat ,**
   * Required: no  
     
 * **-h,--help <arg>**

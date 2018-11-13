@@ -79,6 +79,24 @@ public class RepairTools extends FilterConfig {
 	}
 
 	/**
+	 * @param row
+	 * @return
+	 */
+	protected String rowToString(String[] row, String aDelimiter) {
+		StringBuffer formatter = new StringBuffer();
+
+		for (int i = 0; i < row.length; i++) {
+			if (i != 0) {
+				formatter.append(aDelimiter);
+			}
+
+			formatter.append(row[i]);
+		}
+
+		return formatter.toString();
+	}	
+	
+	/**
 	 * 
 	 */
 	protected void closeOutput() {
