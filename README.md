@@ -12,8 +12,11 @@ but is not guaranteed to always come up with perfect results.
 
 ## Usage
 
+You can either call the Java application directly as can be seen in the **run.sh** shell script, or you can use the
+convenience wrapper **repair.sh**, which takes the same arguments but is pre-configures the Java settings.
+
 ```
-usage: DataFiltering [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-p <arg>] [-t <arg>] [-v] [-w]
+usage: ./repair.sh [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-p <arg>] [-t <arg>] [-v] [-w]
 
  -h,--help <arg>        Command line help
  -i,--input <arg>       Load data from input file
@@ -42,13 +45,13 @@ usage: DataFiltering [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-
 * Repair a comma delimited file that might have spurious commas in the cells of column 8:
 
 ```
-java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation repair --target 8 --iformat c --oformat c --input ./data/person-commaseparator.txt --output ./output/person-commaseparator-repaired.filtered.csv
+./repair.sh -v -w --operation repair --target 8 --iformat c --oformat c --input ./data/person-commaseparator.txt --output ./output/person-commaseparator-repaired.filtered.csv
 ```
 
-* Repair a tab delimited file where some cells have newlines:
+* Repair a tab delimited file where some cells have accidental newlines, the newlines are suspected to occur in column 8:
 
 ```
-java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation repair --target 8 --iformat t --oformat t --input ./data/person-tabseparator.txt --output ./output/person-tabseparator-repaired.filtered.tsv
+./repair.sh -v -w --operation repair --target 8 --iformat t --oformat t --input ./data/person-tabseparator.txt --output ./output/person-tabseparator-repaired.filtered.tsv
 ```
 
 ## Requirements
@@ -137,7 +140,7 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 * **removewhitespace**, 
 
-* **repair**, Always included. This filter will transform characters and strings that might harm the parsability by applications such as Excel. This filter will go through a number of iterations over the input cell data to ensure all characters are spreadsheet safe.
+* **repair**, Always included and placed as the first filter to be run. This filter will transform characters and strings that might harm the parsability by applications such as Excel. This filter will go through a number of iterations over the input cell data to ensure all characters are spreadsheet safe.
  
 
 ## ToDo / Wishlist:
