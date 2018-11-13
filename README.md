@@ -13,7 +13,7 @@ but is not guaranteed to always come up with perfect results.
 ## Usage
 
 You can either call the Java application directly as can be seen in the **run.sh** shell script, or you can use the
-convenience wrapper **repair.sh**, which takes the same arguments but is pre-configures the Java settings.
+convenience wrapper **repair.sh**, which takes the same arguments but has pre-configures the Java settings.
 
 ```
 usage: ./repair.sh [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-p <arg>] [-t <arg>] [-v] [-w]
@@ -39,6 +39,12 @@ usage: ./repair.sh [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-p 
  -v,--verbose           Show verbose log output
  -w,--overwrite         Overwrite existing file if it exists
 ```
+
+## Note
+
+This application can be used to both repair and run transformations on table data. However, if you want to use it for
+it's repair functionality then you can only specify one target column. Currently the application can't automatically
+determine where repaired cells should solely based on their contents.
 
 ## Examples
 
@@ -103,7 +109,7 @@ If you want to build the tool yourself then you will need to have Java and Maven
   * Required: yes
 
 * **-t,--target <arg>**
-  * Description: A specification of which columns to apply the requested operation(s) on. You can specify a single column, a range or a combination separated by commas.
+  * Description: A specification of which columns to apply the requested operation(s) on. You can specify a single column, a range or a combination separated by commas. WARNING: If you're including a repair filter then you can only provide one target column.
   * Example (valid ranges):
     * --target 1
     * --target 1,2,3
@@ -140,7 +146,7 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 * **removewhitespace**, 
 
-* **repair**, Always included and placed as the first filter to be run. This filter will transform characters and strings that might harm the parsability by applications such as Excel. This filter will go through a number of iterations over the input cell data to ensure all characters are spreadsheet safe.
+* **repair**, This filter will try to transform characters and strings that might harm the parsability by applications such as Excel. This filter will go through a number of iterations over the input cell data to ensure all characters are spreadsheet safe. If you include this filter then make sure it's the first in the list.
  
 
 ## ToDo / Wishlist:

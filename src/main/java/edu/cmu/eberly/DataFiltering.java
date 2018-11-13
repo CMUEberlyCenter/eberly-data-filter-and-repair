@@ -1,6 +1,7 @@
 package edu.cmu.eberly;
 
 import java.io.*;
+import java.util.Arrays;
 
 import edu.cmu.eberly.filters.DataFilterInterface;
 
@@ -105,7 +106,7 @@ public class DataFiltering extends FilterManager {
 			current=st.split(inputCharacter);
 		
 			if (current.length==0) {
-				warn("Found row with length 0 at row "+indexOriginal+", skipping");
+				warn("Found row with length 0 at row "+indexOriginal+", skipping ...");
 			} else {				
 				
 				// We're back to normal so we should now be able to inspect what's in previous
@@ -113,7 +114,41 @@ public class DataFiltering extends FilterManager {
 					repair=false;
 					
 					if (previous!=null) {
+						
 						// First run a repair over the total row, we might have to collapse a few cells
+						if (previous.length>headerLength) {
+							// Currently we can only run a repair operation on one target column. We would need
+							// to do a scan of the entire file first to do auto-repair operations on a set of
+							// columns
+							if (targetColumns.size()==1) {
+								int target=targetColumns.get(0);
+								int difference=previous.length-headerLength;
+								
+								target--;
+								
+								debug ("Collapsing " + difference + " cells, starting at: " + target + ", for header length: " + headerLength + ", and previous length: " + previous.length);
+								
+								// collapsing cells, starting at the target column
+								String [] beforeCols=Arrays.copyOfRange(previous,0,target);
+								
+								debug ("Check, previous length: " + previous.length);
+								
+								String [] targetCols=Arrays.copyOfRange(previous,target,target+difference);
+								String [] afterCols=Arrays.copyOfRange(previous,target+difference,previous.length);
+								
+								String collapsed=rowToString(targetCols,inputCharacter);
+								
+								debug ("Collapsed: " + collapsed);
+								
+								beforeCols[beforeCols.length - 1] = collapsed;
+								
+								String [] first=concatenate (beforeCols,afterCols);
+								
+								previous=first;
+							} else {
+								warn("There are more than one target columns provided, we can only run auto-repair functionality on one");
+							}
+						}
 						
 						// Then run the list of desired filters over the resulting cells
             if (applyTransforms (previous)==false) {
@@ -149,7 +184,7 @@ public class DataFiltering extends FilterManager {
 		
 		closeOutput ();	
 		
-		br.close();		
+		br.close();
 	}
 
 	/**
@@ -333,7 +368,7 @@ public class DataFiltering extends FilterManager {
 		DataFiltering filter = new DataFiltering();
 		if (filter.configure(args)==true) {
 			try {
-				filter.showFilters ();
+				//filter.showFilters ();
 				//filter.showAvailable ();
 				filter.run();
 			} catch (Exception e) {

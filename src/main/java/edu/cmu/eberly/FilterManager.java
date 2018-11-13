@@ -77,7 +77,7 @@ public class FilterManager extends RepairTools {
 		// Create a clean list  of filters to be applied and make sure we have at least the
 		// repair filter included
 		filters=new ArrayList<DataFilterInterface> ();
-		filters.add(filterList.get("repair"));
+		//filters.add(filterList.get("repair"));
 
     for (int i=0;i<list.length;i++) {
     	String filterName=list [i].toLowerCase();

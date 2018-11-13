@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.apache.commons.cli.HelpFormatter;
@@ -95,6 +96,23 @@ public class RepairTools extends FilterConfig {
 
 		return formatter.toString();
 	}	
+	
+	/**
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public <T> T[] concatenate(T[] a, T[] b) {
+    int aLen = a.length;
+    int bLen = b.length;
+
+    @SuppressWarnings("unchecked")
+    T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
+    System.arraycopy(a, 0, c, 0, aLen);
+    System.arraycopy(b, 0, c, aLen, bLen);
+
+    return c;
+}	
 	
 	/**
 	 * 
