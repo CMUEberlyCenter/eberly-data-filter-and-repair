@@ -260,16 +260,6 @@ public class DataFiltering extends FilterManager {
 			//RangeParser.printIntRanges (targetColumnString);
 		}
 
-		if (cmd.hasOption("p")) {
-			operation = cmd.getOptionValue("p", "NOP");
-			if (operation.isEmpty() == true) {
-				warn("Invalid or missing cell operation");
-				return (false);
-			}
-			
-			buildFilters (operation);
-		}
-
 		if (cmd.hasOption("i") == false) {
 			warn("Please provide an input file");
 			return (false);
@@ -317,6 +307,21 @@ public class DataFiltering extends FilterManager {
 		
 		inputFile = cmd.getOptionValue("i", "");
 		
+		// Do this last because we might otherwise have a chicken and egg
+		// situation
+		
+		init();
+		
+		if (cmd.hasOption("p")) {
+			operation = cmd.getOptionValue("p", "NOP");
+			if (operation.isEmpty() == true) {
+				warn("Invalid or missing cell operation");
+				return (false);
+			}
+			
+			buildFilters (operation);
+		}		
+		
 		return (true);
 	}
 	
@@ -327,9 +332,6 @@ public class DataFiltering extends FilterManager {
 	public static void main(String[] args) throws Exception {
 		DataFiltering filter = new DataFiltering();
 		if (filter.configure(args)==true) {
-			
-			filter.init();
-			
 			try {
 				filter.showFilters ();
 				//filter.showAvailable ();

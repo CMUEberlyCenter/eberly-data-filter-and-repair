@@ -25,13 +25,6 @@ public class FilterManager extends RepairTools {
 	/**
 	 * 
 	 */
-	public FilterManager () {
-
-	}
-
-	/**
-	 * 
-	 */
 	public void init () {
 		addFilter (new FilterJSON2XML (this));
 		addFilter (new FilterXML2JSON (this));

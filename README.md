@@ -41,12 +41,15 @@ usage: DataFiltering [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-
 
 * Repair a comma delimited file that might have spurious commas in the cells of column 8:
 
+```
 java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation repair --target 8 --iformat c --oformat c --input ./data/person-commaseparator.txt --output ./output/person-commaseparator-repaired.filtered.csv
+```
 
 * Repair a tab delimited file where some cells have newlines:
 
+```
 java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation repair --target 8 --iformat t --oformat t --input ./data/person-tabseparator.txt --output ./output/person-tabseparator-repaired.filtered.tsv
-
+```
 
 ## Requirements
 
