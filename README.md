@@ -33,6 +33,8 @@ usage: ./repair.sh [-h <arg>] [-i <arg>] [-if <arg>] [-o <arg>] [-of <arg>] [-p 
                         removewhitespace. Separate with | to run multiple
                         filters. Filters are executed left to right as
                         they are specified in this argument
+ -s,--salt <arg>        Allows you to specify a common salt string to be used by
+                        the hash function in the hashcode filter.  
  -t,--target <arg>      Target column to modify, numeric index You can
                         specify a single index, a comma separated list of
                         indices, a range such as 1-4 or a combination

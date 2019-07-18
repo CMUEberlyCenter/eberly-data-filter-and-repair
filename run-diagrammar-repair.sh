@@ -21,4 +21,6 @@ if [[ "$_java" ]]; then
     fi
 fi
 
-java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation removenewline --target 20 --iformat t --oformat t --input /Volumes/32GB/Data/diagrammar/diagram-F18.tsv --output /Volumes/32GB/Data/diagrammar/diagram-F18.repaired.tsv
+#java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation removenewline --target 20 --iformat t --oformat t --input /Volumes/32GB/Data/diagrammar/diagram-F18.tsv --output /Volumes/32GB/Data/diagrammar/diagram-F18.repaired.tsv
+java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation removenewline --target 20 --iformat t --oformat t --input /Volumes/32GB/Data/diagrammar/diagram-M1.tsv --output /Volumes/32GB/Data/diagrammar/diagram-M1.repaired.tsv
+java -cp ./dist/datafiltering-1.0-SNAPSHOT-jar-with-dependencies.jar edu.cmu.eberly.DataFiltering -v -w --operation removenewline --target 20 --iformat t --oformat t --input /Volumes/32GB/Data/diagrammar/diagram-M2.tsv --output /Volumes/32GB/Data/diagrammar/diagram-M2.repaired.tsv
