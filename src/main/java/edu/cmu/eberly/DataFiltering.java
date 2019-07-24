@@ -230,6 +230,11 @@ public class DataFiltering extends FilterManager {
 		closeOutput ();	
 		
 		br.close();
+		
+		for (int i=0;i<cellFilters.size();i++) {
+			CellFilterInterface aFilter=cellFilters.get(i);
+			aFilter.postProcess(this);
+		}
 	}
 
 	/**

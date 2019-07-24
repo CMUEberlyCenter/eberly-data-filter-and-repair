@@ -28,9 +28,6 @@ public class RepairTools extends FilterConfig {
 
 	protected String operation = "NOP";
 
-	protected String inputFile = "";
-	protected String outputFile = "";
-
 	/**
 	 * @param aMessage
 	 */

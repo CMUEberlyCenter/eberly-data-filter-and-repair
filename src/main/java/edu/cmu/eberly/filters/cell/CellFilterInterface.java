@@ -2,6 +2,8 @@ package edu.cmu.eberly.filters.cell;
 
 import org.apache.commons.cli.CommandLine;
 
+import edu.cmu.eberly.FilterConfig;
+
 /**
  * @author vvelsen
  */
@@ -33,4 +35,9 @@ public interface CellFilterInterface {
    * @param cmd
    */
 	public void parseArgs(CommandLine cmd);
+	
+	/**
+	 * @param aConfig
+	 */
+	public void postProcess (FilterConfig aConfig);
 }

@@ -71,4 +71,12 @@ public class CellFilterBase implements CellFilterInterface {
 	@Override
 	public void parseArgs(CommandLine cmd) {		
 	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public void postProcess(FilterConfig aConfig) {
+		// TODO Auto-generated method stub
+	}
 }
