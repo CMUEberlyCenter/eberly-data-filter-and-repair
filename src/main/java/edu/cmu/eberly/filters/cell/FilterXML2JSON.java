@@ -1,4 +1,4 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
 
 import java.io.IOException;
 
@@ -9,12 +9,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.json.*;
 import org.xml.sax.SAXException;
 
-import edu.cmu.eberly.filters.DataFilterInterface;
+import edu.cmu.eberly.FilterConfig;
+import edu.cmu.eberly.filters.cell.CellFilterInterface;
 
 /**
  * @author vvelsen
  */
-public class FilterXML2JSON extends FilterBase implements DataFilterInterface {
+public class FilterXML2JSON extends CellFilterBase implements CellFilterInterface {
 
 	/**
 	 * 

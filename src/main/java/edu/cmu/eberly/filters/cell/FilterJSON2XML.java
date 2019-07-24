@@ -1,14 +1,16 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 
+import edu.cmu.eberly.FilterConfig;
+
 /**
  * @author vvelsen
  */
-public class FilterJSON2XML extends FilterBase implements DataFilterInterface {
+public class FilterJSON2XML extends CellFilterBase implements CellFilterInterface {
 
 	/**
 	 * 

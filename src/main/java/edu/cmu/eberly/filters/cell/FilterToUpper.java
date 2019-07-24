@@ -1,9 +1,11 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
+
+import edu.cmu.eberly.FilterConfig;
 
 /**
  * @author vvelsen
  */
-public class FilterToUpper extends FilterBase implements DataFilterInterface {
+public class FilterToUpper extends CellFilterBase implements CellFilterInterface {
 
 	/**
 	 * 

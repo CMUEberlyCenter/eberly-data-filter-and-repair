@@ -1,9 +1,13 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
+
+import org.apache.commons.cli.CommandLine;
+
+import edu.cmu.eberly.FilterConfig;
 
 /**
  * @author vvelsen
  */
-public class FilterBase implements DataFilterInterface {
+public class CellFilterBase implements CellFilterInterface {
 
 	private String filterName="base";
 	protected FilterConfig config=new FilterConfig (); // Make sure we have something
@@ -12,7 +16,7 @@ public class FilterBase implements DataFilterInterface {
 	/**
 	 * @param aConfig
 	 */
-	public FilterBase (FilterConfig aConfig) {
+	public CellFilterBase (FilterConfig aConfig) {
 		config=aConfig;
 	}
 
@@ -59,5 +63,12 @@ public class FilterBase implements DataFilterInterface {
 	 */
 	public String transform(String raw) {
 		return raw;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public void parseArgs(CommandLine cmd) {		
 	}
 }

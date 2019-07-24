@@ -1,4 +1,4 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly;
 
 /**
  * @author vvelsen

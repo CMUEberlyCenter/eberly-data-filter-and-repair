@@ -1,9 +1,11 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
+
+import edu.cmu.eberly.FilterConfig;
 
 /**
  * @author vvelsen
  */
-public class FilterRemoveWhitespace extends FilterBase implements DataFilterInterface {
+public class FilterRemoveWhitespace extends CellFilterBase implements CellFilterInterface {
 
 	/**
 	 * 

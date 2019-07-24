@@ -1,9 +1,11 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
+
+import edu.cmu.eberly.FilterConfig;
 
 /**
  * @author vvelsen
  */
-public class FilterRepair extends FilterBase implements DataFilterInterface {
+public class FilterRepair extends CellFilterBase implements CellFilterInterface {
 
 	/**
 	 * 

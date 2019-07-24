@@ -1,9 +1,11 @@
-package edu.cmu.eberly.filters;
+package edu.cmu.eberly.filters.cell;
+
+import org.apache.commons.cli.CommandLine;
 
 /**
  * @author vvelsen
  */
-public interface DataFilterInterface {
+public interface CellFilterInterface {
 	
 	/**
 	 * 
@@ -26,4 +28,9 @@ public interface DataFilterInterface {
 	 * @return
 	 */
   public String transform (String raw);
+
+  /**
+   * @param cmd
+   */
+	public void parseArgs(CommandLine cmd);
 }

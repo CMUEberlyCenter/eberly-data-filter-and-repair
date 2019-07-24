@@ -4,36 +4,55 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
 
-import edu.cmu.eberly.filters.DataFilterInterface;
-import edu.cmu.eberly.filters.FilterHashcode;
-import edu.cmu.eberly.filters.FilterJSON2XML;
-import edu.cmu.eberly.filters.FilterRemoveWhitespace;
-import edu.cmu.eberly.filters.FilterRepair;
-import edu.cmu.eberly.filters.FilterToLower;
-import edu.cmu.eberly.filters.FilterToUpper;
-import edu.cmu.eberly.filters.FilterTrim;
-import edu.cmu.eberly.filters.FilterXML2JSON;
+import org.apache.commons.cli.CommandLine;
+
+import edu.cmu.eberly.filters.cell.CellFilterInterface;
+import edu.cmu.eberly.filters.cell.FilterFixXML;
+import edu.cmu.eberly.filters.cell.FilterHTMLEncode;
+import edu.cmu.eberly.filters.cell.FilterHashcode;
+import edu.cmu.eberly.filters.cell.FilterJSON2XML;
+import edu.cmu.eberly.filters.cell.FilterRemoveBoundingQuotes;
+import edu.cmu.eberly.filters.cell.FilterRemoveNewline;
+import edu.cmu.eberly.filters.cell.FilterRemoveWhitespace;
+import edu.cmu.eberly.filters.cell.FilterRepair;
+import edu.cmu.eberly.filters.cell.FilterToLower;
+import edu.cmu.eberly.filters.cell.FilterToUpper;
+import edu.cmu.eberly.filters.cell.FilterTrim;
+import edu.cmu.eberly.filters.cell.FilterXML2JSON;
+import edu.cmu.eberly.filters.row.FilterExportRow;
+import edu.cmu.eberly.filters.row.RowFilterInterface;
 
 /**
  * @author vvelsen
  */
 public class FilterManager extends RepairTools {
 	
-	protected Hashtable <String,DataFilterInterface>filterList=new Hashtable<String, DataFilterInterface> ();
-	protected ArrayList <DataFilterInterface>filters=new ArrayList <DataFilterInterface> ();
+	protected Hashtable <String,CellFilterInterface>cellFilterList=new Hashtable<String, CellFilterInterface> ();
+	protected Hashtable <String,RowFilterInterface>rowFilterList=new Hashtable<String, RowFilterInterface> ();
+	
+	protected ArrayList <CellFilterInterface>cellFilters=new ArrayList <CellFilterInterface> ();
+	protected ArrayList <RowFilterInterface>rowFilters=new ArrayList <RowFilterInterface> ();
 
 	/**
 	 * 
 	 */
 	public void init () {
-		addFilter (new FilterJSON2XML (this));
-		addFilter (new FilterXML2JSON (this));
-		addFilter (new FilterTrim (this));
-		addFilter (new FilterToUpper(this));
-		addFilter (new FilterToLower(this));
-		addFilter (new FilterRemoveWhitespace(this));
-		addFilter (new FilterHashcode(this));
-		addFilter (new FilterRepair (this));
+		debug ("init ()");
+		
+		addCellFilter (new FilterJSON2XML (this));
+		addCellFilter (new FilterXML2JSON (this));
+		addCellFilter (new FilterTrim (this));
+		addCellFilter (new FilterToUpper(this));
+		addCellFilter (new FilterToLower(this));
+		addCellFilter (new FilterRemoveWhitespace(this));
+		addCellFilter (new FilterHashcode(this));
+		addCellFilter (new FilterRepair (this));
+		addCellFilter (new FilterRemoveNewline (this));
+		addCellFilter (new FilterHTMLEncode (this));
+		addCellFilter (new FilterFixXML (this));
+		addCellFilter (new FilterRemoveBoundingQuotes (this));
+		
+		addRowFilter (new FilterExportRow (this));
 	}
 	
 	/**
@@ -41,7 +60,7 @@ public class FilterManager extends RepairTools {
 	 */
 	public void showAvailable () {
 		debug ("Available filters:");
-    Set<String> keys = filterList.keySet();
+    Set<String> keys = cellFilterList.keySet();
     for(String key: keys){
       debug("Available filter of "+key);
     }		
@@ -51,42 +70,83 @@ public class FilterManager extends RepairTools {
 	 * 
 	 */
 	public void showFilters () {
-		debug ("Assigned filters:");
-		for (int i=0;i<filters.size();i++) {
-			DataFilterInterface aFilter=filters.get(i);
+		debug ("Assigned (cell) filters:");
+		
+		for (int i=0;i<cellFilters.size();i++) {
+			CellFilterInterface aFilter=cellFilters.get(i);
 			System.out.println("Filter ["+i+"]: " + aFilter.getName());
 		}
+		
+		debug ("Assigned (row) filters:");
+		
+		for (int i=0;i<rowFilters.size();i++) {
+			RowFilterInterface aFilter=rowFilters.get(i);
+			System.out.println("Filter ["+i+"]: " + aFilter.getName());
+		}		
 	}
 	
 	/**
-	 * @param filterJSON2XML
+	 * @param aFilter
 	 */
-	protected void addFilter(DataFilterInterface aFilter) {
-		filterList.put(aFilter.getName(),aFilter);
+	protected void addCellFilter(CellFilterInterface aFilter) {
+		cellFilterList.put(aFilter.getName(),aFilter);
 		aFilter.setUseDebugging(useDebugging);
 	}
+	
+	/**
+	 * @param aFilter
+	 */
+	protected void addRowFilter(RowFilterInterface aFilter) {
+		//debug (aFilter.getName());
+		rowFilterList.put(aFilter.getName(),aFilter);
+		aFilter.setUseDebugging(useDebugging);
+	}	
 
 	/**
-	 * 
+	 * @param cmd 
 	 */
-	protected void buildFilters (String aConfig) {
-		debug ("buildFilters ("+aConfig+")");
+	protected void buildCellFilters (String aConfig, CommandLine cmd) {
+		debug ("buildCellFilters ("+aConfig+")");
 		
 		String [] list=aConfig.split("\\|");
 		
 		// Create a clean list  of filters to be applied and make sure we have at least the
 		// repair filter included
-		filters=new ArrayList<DataFilterInterface> ();
-		//filters.add(filterList.get("repair"));
+		cellFilters=new ArrayList<CellFilterInterface> ();
 
     for (int i=0;i<list.length;i++) {
-    	String filterName=list [i].toLowerCase();
+    	String filterName=list [i].toLowerCase().trim();
     	debug ("Adding filter with name: " + filterName);
-    	DataFilterInterface testFilter=filterList.get(filterName);
+    	CellFilterInterface testFilter=cellFilterList.get(filterName);
     	if (testFilter!=null) {
     		debug ("Filter found, adding to active list ...");
-    		filters.add(testFilter);
+    		testFilter.parseArgs (cmd);
+    		cellFilters.add(testFilter);
     	}
     }
 	}	
+	
+	/**
+	 * @param cmd 
+	 */
+	protected void buildRowFilters (String aConfig, CommandLine cmd) {
+		debug ("buildRowFilters ("+aConfig+")");
+		
+		String [] list=aConfig.split("\\|");
+		
+		// Create a clean list  of filters to be applied and make sure we have at least the
+		// repair filter included
+		cellFilters=new ArrayList<CellFilterInterface> ();
+
+    for (int i=0;i<list.length;i++) {
+    	String filterName=list [i].toLowerCase().trim();
+    	debug ("Adding filter with name: " + filterName);
+    	RowFilterInterface testFilter=rowFilterList.get(filterName);
+    	if (testFilter!=null) {
+    		debug ("Filter found, adding to active list ...");
+    		testFilter.parseArgs (cmd);
+    		rowFilters.add(testFilter);
+    	}
+    }
+	}		
 }

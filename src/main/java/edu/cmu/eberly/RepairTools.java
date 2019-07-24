@@ -11,14 +11,12 @@ import java.util.ArrayList;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
-import edu.cmu.eberly.filters.FilterConfig;
-
 /**
  * @author vvelsen
  */
 public class RepairTools extends FilterConfig {
 
-	protected boolean useDebugging = false;
+	protected boolean useDebugging = true;
 	protected Options options = new Options();
 
 	protected Boolean useStOut = true;
@@ -56,7 +54,7 @@ public class RepairTools extends FilterConfig {
 		HelpFormatter formatter = new HelpFormatter();
 
 		String header = "A small application that can be used to clean, filter and repair raw spreadsheet data before it's used in other tools\n\n";
-		String footer = "\nPlease report issues at https://github.com/Mindtoeye/DataFilterAndRepair/issues";
+		String footer = "\nPlease report issues at https://github.com/Eberly/DataFilterAndRepair/issues";
 
 		formatter.printHelp("DataFiltering", header, options, footer, true);
 	}
