@@ -366,7 +366,7 @@ public class DataFiltering extends FilterManager {
 		options.addOption("if", "iformat", true, "Input delimiter character, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is");
 		options.addOption("of", "oformat", true, "Output delimiter character, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index You can specify a single index, a comma separated list of indices, a range such as 1-4 or a combination");
-		options.addOption("pc", "cell_operation (cell)", true, "The operation to perform on a cell, one of: json2xml, xml2json, trim, tolower, toupper, hashcode, removewhitespace, removenewline, htmlencode, fixxml, removeboundingquotes. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
+		options.addOption("pc", "cell_operation (cell)", true, "The operation to perform on a cell, one of: json2xml, xml2json, trim, tolower, toupper, hashcode, removewhitespace, removenewline, htmlencode, fixxml, unescape, removeboundingquotes. Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
 		options.addOption("pr", "row_operation (row)", true, "The operation to perform on an entire row (tbd). Separate with | to run multiple filters. Filters are executed left to right as they are specified in this argument");
 	
 		// >-------------------------------------------------------------------------------------

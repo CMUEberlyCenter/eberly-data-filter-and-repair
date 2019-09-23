@@ -35,11 +35,17 @@
       <version>20160212</version>
     </dependency>
 
-    <!--  Provides hash functionality -->
+    <!-- Provides hash functionality -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>20.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.4</version>
     </dependency>
 
   </dependencies>

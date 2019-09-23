@@ -18,6 +18,7 @@ import edu.cmu.eberly.filters.cell.FilterRepair;
 import edu.cmu.eberly.filters.cell.FilterToLower;
 import edu.cmu.eberly.filters.cell.FilterToUpper;
 import edu.cmu.eberly.filters.cell.FilterTrim;
+import edu.cmu.eberly.filters.cell.FilterUnescape;
 import edu.cmu.eberly.filters.cell.FilterXML2JSON;
 import edu.cmu.eberly.filters.row.FilterExportRow;
 import edu.cmu.eberly.filters.row.RowFilterInterface;
@@ -51,6 +52,7 @@ public class FilterManager extends RepairTools {
 		addCellFilter (new FilterHTMLEncode (this));
 		addCellFilter (new FilterFixXML (this));
 		addCellFilter (new FilterRemoveBoundingQuotes (this));
+		addCellFilter (new FilterUnescape (this));
 		
 		addRowFilter (new FilterExportRow (this));
 	}
