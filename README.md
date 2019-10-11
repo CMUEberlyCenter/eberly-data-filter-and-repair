@@ -138,18 +138,27 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 * **xml2json**, 
 
-* **trim**, 
+* **trim**, Remove any redundant whitespace before and after the string value of a cell
 
-* **tolower**, 
+* **tolower**, Convert all characters in a string to lower case
 
-* **toupper**, 
+* **toupper**, Convert all characters in a string to upper case
 
-* **hashcode**,
+* **hashcode**, Run a hash function over the content of a cell using an additional salt if provided. This operation will produce an additional file containing a lookup table that maps hashcodes to the original values
 
-* **removewhitespace**, 
+* **removewhitespace**, Take out any whitespace from the string value of a cell
 
 * **repair**, This filter will try to transform characters and strings that might harm the parsability by applications such as Excel. This filter will go through a number of iterations over the input cell data to ensure all characters are spreadsheet safe. If you include this filter then make sure it's the first in the list.
  
+* **htmlencode**, URL encoding converts characters into a format that can be transmitted over the Internet, Reference: https://www.w3schools.com/tags/ref_urlencode.asp
+ 
+* **fixxml**, 
+ 
+* **unescape**, 
+ 
+* **removeboundingquotes**, Take out any double quotes surrounding a string value, so "Hello World" becomes Hello World
+ 
+* **removenewline**, 
 
 ## ToDo / Wishlist:
 
