@@ -134,9 +134,9 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 ## Currently supported filters/operations are:
 
-* **json2xml**,
+* **json2xml**, Does a syntactic transformation from JSON format to XML
 
-* **xml2json**, 
+* **xml2json**, Does a syntactic transformation from XML format to JSON
 
 * **trim**, Remove any redundant whitespace before and after the string value of a cell
 
@@ -158,7 +158,7 @@ If you want to build the tool yourself then you will need to have Java and Maven
  
 * **removeboundingquotes**, Take out any double quotes surrounding a string value, so "Hello World" becomes Hello World
  
-* **removenewline**, 
+* **removenewline**, Remove any newlines from a string value, this includes \n as well as \r\n
 
 ## ToDo / Wishlist:
 
