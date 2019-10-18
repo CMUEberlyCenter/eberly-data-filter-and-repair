@@ -16,7 +16,7 @@ import org.apache.commons.cli.Options;
  */
 public class RepairTools extends FilterConfig {
 
-	protected boolean useDebugging = true;
+	protected boolean useDebugging = false;
 	protected Options options = new Options();
 
 	protected Boolean useStOut = true;
