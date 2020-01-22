@@ -134,6 +134,8 @@ If you want to build the tool yourself then you will need to have Java and Maven
 
 ## Currently supported filters/operations are:
 
+* **drop**, Effectively drops a column by replacing the content by a single space character
+
 * **json2xml**, Does a syntactic transformation from JSON format to XML
 
 * **xml2json**, Does a syntactic transformation from XML format to JSON

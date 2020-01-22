@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.cli.CommandLine;
 
 import edu.cmu.eberly.filters.cell.CellFilterInterface;
+import edu.cmu.eberly.filters.cell.FilterDropColumn;
 import edu.cmu.eberly.filters.cell.FilterFixXML;
 import edu.cmu.eberly.filters.cell.FilterHTMLEncode;
 import edu.cmu.eberly.filters.cell.FilterHashcode;
@@ -15,6 +16,7 @@ import edu.cmu.eberly.filters.cell.FilterRemoveBoundingQuotes;
 import edu.cmu.eberly.filters.cell.FilterRemoveNewline;
 import edu.cmu.eberly.filters.cell.FilterRemoveWhitespace;
 import edu.cmu.eberly.filters.cell.FilterRepair;
+import edu.cmu.eberly.filters.cell.FilterReplace;
 import edu.cmu.eberly.filters.cell.FilterToLower;
 import edu.cmu.eberly.filters.cell.FilterToUpper;
 import edu.cmu.eberly.filters.cell.FilterTrim;
@@ -53,6 +55,8 @@ public class FilterManager extends RepairTools {
 		addCellFilter (new FilterFixXML (this));
 		addCellFilter (new FilterRemoveBoundingQuotes (this));
 		addCellFilter (new FilterUnescape (this));
+		addCellFilter (new FilterDropColumn (this));
+		addCellFilter (new FilterReplace (this));
 		
 		addRowFilter (new FilterExportRow (this));
 	}
