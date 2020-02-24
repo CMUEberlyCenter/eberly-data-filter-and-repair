@@ -32,9 +32,9 @@ public class RepairTools extends FilterConfig {
 	 * @param aMessage
 	 */
 	protected void debug(String aMessage) {
-		if (useDebugging == true) {
+		//if (useDebugging == true) {
 			System.out.println(aMessage);
-		}
+		//}
 	}
 
 	/**

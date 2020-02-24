@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -13,8 +12,10 @@ import java.util.Random;
 
 import org.apache.commons.cli.CommandLine;
 
+import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 
+//import edu.cmu.eberly.ArgTools;
 import edu.cmu.eberly.FilterConfig;
 
 /**
@@ -40,9 +41,15 @@ public class FilterHashcode extends CellFilterBase implements CellFilterInterfac
 	 */
 	@Override
 	public void parseArgs(CommandLine cmd) {
-
+    debug ("parseArgs ("+cmd.getOptions().length+")");
+        
 		if (cmd.hasOption("s")) {
-			salt = cmd.getOptionValue("s", getRandomString());
+			String backupSalt=getRandomString();
+			debug ("Backup salt: " + backupSalt);
+			FilterHashcode.salt = cmd.getOptionValue("s", backupSalt);
+			debug("Using command line provided salt: " + FilterHashcode.salt);
+		} else {
+			debug("No salt provided, using randomly generated salt: " + FilterHashcode.salt);
 		}
 	}
 
@@ -61,13 +68,22 @@ public class FilterHashcode extends CellFilterBase implements CellFilterInterfac
 	}
 
 	/**
-	 * 
+	 * https://www.baeldung.com/java-random-string
 	 */
 	private String getRandomString() {
-		byte[] array = new byte[16];
-		new Random().nextBytes(array);
-		String generatedString = new String(array, Charset.forName("UTF-8"));
-		return (generatedString);
+    int leftLimit = 97; // letter 'a'
+    int rightLimit = 122; // letter 'z'
+    int targetStringLength = 16;
+    Random random = new Random();
+    StringBuilder buffer = new StringBuilder(targetStringLength);
+    for (int i = 0; i < targetStringLength; i++) {
+        int randomLimitedInt = leftLimit + (int) 
+          (random.nextFloat() * (rightLimit - leftLimit + 1));
+        buffer.append((char) randomLimitedInt);
+    }
+    String generatedString = buffer.toString();
+ 
+    return (generatedString);
 	}
 
 	/**
@@ -75,11 +91,9 @@ public class FilterHashcode extends CellFilterBase implements CellFilterInterfac
 	 */
 	@Override
 	public String transform(String raw) {
-		/*
-		 * Integer code=raw.hashCode(); return code.toString();
-		 */
-
-		String sha256hex = Hashing.sha256().hashString(raw + FilterHashcode.salt, StandardCharsets.UTF_8).toString();
+		String input=raw + FilterHashcode.salt;
+		HashCode hashCode = Hashing.sha256().hashString(input, StandardCharsets.UTF_8);
+		String sha256hex = hashCode.toString();
 
 		mapping.put(sha256hex, raw);
 

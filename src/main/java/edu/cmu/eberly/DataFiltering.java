@@ -362,7 +362,7 @@ public class DataFiltering extends FilterManager {
 		options.addOption("o", "output", true, "Write data to output file, or if not provided write to stdout");
 		options.addOption("w", "overwrite", false, "Overwrite existing file if it exists");
 		options.addOption("v", "verbose", false, "Show verbose log output");
-		options.addOption("s", "salt", false, "Provide a salt string for those filters that encrypt, randomize or hash");
+		options.addOption("s", "salt", true, "Provide a salt string for those filters that encrypt, randomize or hash");
 		options.addOption("if", "iformat", true, "Input delimiter character, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is");
 		options.addOption("of", "oformat", true, "Output delimiter character, use t for tab and c for comma. Default is c (comma). Any other character or string will be used as-is");
 		options.addOption("t", "target", true, "Target column to modify, numeric index You can specify a single index, a comma separated list of indices, a range such as 1-4 or a combination");
@@ -373,7 +373,7 @@ public class DataFiltering extends FilterManager {
 		// Run basic tests
 
 		if (args.length == 0) {
-			debug ("No arguments provided");
+			System.out.println ("No arguments provided");
 			return (false);
 		}
 
@@ -385,9 +385,25 @@ public class DataFiltering extends FilterManager {
 		try {
 			cmd = parser.parse(options, args);
 		} catch (ParseException e) {
-			debug ("Can't parse arguments: " + e.getMessage());
+			System.out.println ("Can't parse arguments: " + e.getMessage());
 			return (false);
 		}
+		
+		//ArgTools.debugCommandOptions(cmd);
+		
+		/*
+		if (cmd.hasOption("s")) {
+			debug ("Salt: " + cmd.getOptionValue("s", "nop"));
+		} else {
+			debug ("No salt provided");
+		}
+		
+		if (cmd.hasOption("salt")) {
+			debug ("Salt: " + cmd.getOptionValue("salt", "nop"));
+		} else {
+			debug ("No salt provided");
+		}	
+		*/	
 
 		if (cmd.hasOption("h")) {
 			return (false);
@@ -422,8 +438,10 @@ public class DataFiltering extends FilterManager {
 			useStOut=false;
 			outputFile = cmd.getOptionValue("o", "");
 			if (outputFile.isEmpty()==true) {
-				outputFile = cmd.getOptionValue("output", "");				
+				outputFile = cmd.getOptionValue("output", "");
 			}
+			
+			debug ("Writing to: " + outputFile);
 		}
 
 		if (cmd.hasOption("if") == true) {
@@ -458,6 +476,8 @@ public class DataFiltering extends FilterManager {
 		}
 		
 		inputFile = cmd.getOptionValue("i", "");
+		
+		debug ("Using input file: " + inputFile);
 		
 		// Do this last because we might otherwise have a chicken and egg
 		// situation

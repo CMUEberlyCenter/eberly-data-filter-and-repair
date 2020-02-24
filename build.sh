@@ -25,6 +25,10 @@ if [[ "$_java" ]]; then
     fi
 fi
 
+echo "Cleaning ..."
+rm -rf ./dist/*.jar
+rm -rf ./target/*.jar
+
 echo "Building packages ..."
 mvn compile assembly:single
 
